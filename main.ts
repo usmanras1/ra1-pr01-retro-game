@@ -4,29 +4,8 @@ namespace SpriteKind {
     export const Fireball = SpriteKind.create()
 }
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function on_on_overlap(sprite: Sprite, otherSprite: Sprite) {
-    info.changeScoreBy(1)
-    otherSprite.destroy()
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`
-        tile3
-        `, function on_overlap_tile(sprite2: Sprite, location: tiles.Location) {
-    game.over(false, effects.melt)
-})
-controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
-    if (Hops_and_Paw.vy == 0) {
-        Hops_and_Paw.vy = -150
-    }
-    
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`
-        tile2
-        `, function on_overlap_tile2(sprite3: Sprite, location2: tiles.Location) {
-    
-    current_level += 1
-    startLevel()
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Flower, function on_on_overlap2(sprite4: Sprite, otherSprite2: Sprite) {
+//  Destruye al sprite enemigo al tocarlo
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Flower, function on_on_overlap(sprite4: Sprite, otherSprite2: Sprite) {
     
     otherSprite2.destroy()
     bee = sprites.create(img`
@@ -85,10 +64,48 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Flower, function on_on_overlap2(
     bee.setPosition(Hops_and_Paw.x + 80, Hops_and_Paw.y - 80)
     bee.follow(Hops_and_Paw, 50)
 })
+//  Incrementa la puntuación y destruye la moneda al tocarla
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function on_on_overlap2(sprite: Sprite, otherSprite: Sprite) {
+    info.changeScoreBy(1)
+    otherSprite.destroy()
+})
+//  Resta vidas al jugador al tocar la bola de fuego y la destruye
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Fireball, function on_on_overlap3(sprite5: Sprite, otherSprite3: Sprite) {
     info.changeLifeBy(-2)
     otherSprite3.destroy()
 })
+//  Hace que el jugador salte al presionar A
+controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
+    if (Hops_and_Paw.vy == 0) {
+        Hops_and_Paw.vy = -150
+    }
+    
+})
+//  Maneja el choque con un enemigo
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_on_overlap4(sprite6: Sprite, otherSprite4: Sprite) {
+    otherSprite4.destroy()
+    if (Hops_and_Paw.y < otherSprite4.y) {
+        info.changeScoreBy(3)
+    } else {
+        info.changeLifeBy(-1)
+    }
+    
+})
+//  Termina el juego si el jugador toca el tile peligroso
+scene.onOverlapTile(SpriteKind.Player, assets.tile`
+        tile3
+        `, function on_overlap_tile(sprite2: Sprite, location: tiles.Location) {
+    game.over(false, effects.melt)
+})
+//  Avanza al siguiente nivel al tocar el tile de salida
+scene.onOverlapTile(SpriteKind.Player, assets.tile`
+        tile2
+        `, function on_overlap_tile2(sprite3: Sprite, location2: tiles.Location) {
+    
+    current_level += 1
+    startLevel()
+})
+//  Configura el nivel actual, coloca al jugador y limpia enemigos y objetos
 function startLevel() {
     
     if (current_level == 0) {
@@ -364,15 +381,6 @@ function startLevel() {
     }
 }
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_on_overlap4(sprite6: Sprite, otherSprite4: Sprite) {
-    otherSprite4.destroy()
-    if (Hops_and_Paw.y < otherSprite4.y) {
-        info.changeScoreBy(3)
-    } else {
-        info.changeLifeBy(-1)
-    }
-    
-})
 let fireball : Sprite = null
 let flower : Sprite = null
 let bee : Sprite = null
@@ -522,6 +530,7 @@ Hops_and_Paw = sprites.create(img`
         `, SpriteKind.Player)
 controller.moveSprite(Hops_and_Paw, 80, 0)
 startLevel()
+//  Actualiza la animación
 game.onUpdate(function on_on_update() {
     if (Hops_and_Paw.vy < 0) {
         Hops_and_Paw.setImage(img`

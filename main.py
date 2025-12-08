@@ -3,36 +3,9 @@ class SpriteKind:
     Coin = SpriteKind.create()
     Flower = SpriteKind.create()
     Fireball = SpriteKind.create()
+# Destruye al sprite enemigo al tocarlo
 
-def on_on_overlap(sprite, otherSprite):
-    info.change_score_by(1)
-    otherSprite.destroy()
-sprites.on_overlap(SpriteKind.player, SpriteKind.Coin, on_on_overlap)
-
-def on_overlap_tile(sprite2, location):
-    game.over(False, effects.melt)
-scene.on_overlap_tile(SpriteKind.player,
-    assets.tile("""
-        tile3
-        """),
-    on_overlap_tile)
-
-def on_a_pressed():
-    if Hops_and_Paw.vy == 0:
-        Hops_and_Paw.vy = -150
-controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
-
-def on_overlap_tile2(sprite3, location2):
-    global current_level
-    current_level += 1
-    startLevel()
-scene.on_overlap_tile(SpriteKind.player,
-    assets.tile("""
-        tile2
-        """),
-    on_overlap_tile2)
-
-def on_on_overlap2(sprite4, otherSprite2):
+def on_on_overlap(sprite4, otherSprite2):
     global bee
     otherSprite2.destroy()
     bee = sprites.create(img("""
@@ -95,13 +68,62 @@ def on_on_overlap2(sprite4, otherSprite2):
         True)
     bee.set_position(Hops_and_Paw.x + 80, Hops_and_Paw.y - 80)
     bee.follow(Hops_and_Paw, 50)
-sprites.on_overlap(SpriteKind.player, SpriteKind.Flower, on_on_overlap2)
+sprites.on_overlap(SpriteKind.player, SpriteKind.Flower, on_on_overlap)
+
+# Incrementa la puntuación y destruye la moneda al tocarla
+
+def on_on_overlap2(sprite, otherSprite):
+    info.change_score_by(1)
+    otherSprite.destroy()
+sprites.on_overlap(SpriteKind.player, SpriteKind.Coin, on_on_overlap2)
+
+# Resta vidas al jugador al tocar la bola de fuego y la destruye
 
 def on_on_overlap3(sprite5, otherSprite3):
     info.change_life_by(-2)
     otherSprite3.destroy()
 sprites.on_overlap(SpriteKind.player, SpriteKind.Fireball, on_on_overlap3)
 
+# Hace que el jugador salte al presionar A
+
+def on_a_pressed():
+    if Hops_and_Paw.vy == 0:
+        Hops_and_Paw.vy = -150
+controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
+
+# Maneja el choque con un enemigo
+
+def on_on_overlap4(sprite6, otherSprite4):
+    otherSprite4.destroy()
+    if Hops_and_Paw.y < otherSprite4.y:
+        info.change_score_by(3)
+    else:
+        info.change_life_by(-1)
+sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap4)
+
+# Termina el juego si el jugador toca el tile peligroso
+
+def on_overlap_tile(sprite2, location):
+    game.over(False, effects.melt)
+scene.on_overlap_tile(SpriteKind.player,
+    assets.tile("""
+        tile3
+        """),
+    on_overlap_tile)
+
+# Avanza al siguiente nivel al tocar el tile de salida
+
+def on_overlap_tile2(sprite3, location2):
+    global current_level
+    current_level += 1
+    startLevel()
+scene.on_overlap_tile(SpriteKind.player,
+    assets.tile("""
+        tile2
+        """),
+    on_overlap_tile2)
+
+# Configura el nivel actual, coloca al jugador y limpia enemigos y objetos
 def startLevel():
     global flower, fireball
     if current_level == 0:
@@ -380,15 +402,6 @@ def startLevel():
             """))
         animation.run_movement_animation(fireball, "c 0 -100 0 100 0 0", 2000, True)
         fireball.start_effect(effects.fire)
-
-def on_on_overlap4(sprite6, otherSprite4):
-    otherSprite4.destroy()
-    if Hops_and_Paw.y < otherSprite4.y:
-        info.change_score_by(3)
-    else:
-        info.change_life_by(-1)
-sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap4)
-
 fireball: Sprite = None
 flower: Sprite = None
 bee: Sprite = None
@@ -540,6 +553,7 @@ Hops_and_Paw = sprites.create(img("""
 controller.move_sprite(Hops_and_Paw, 80, 0)
 startLevel()
 
+# Actualiza la animación
 def on_on_update():
     if Hops_and_Paw.vy < 0:
         Hops_and_Paw.set_image(img("""
