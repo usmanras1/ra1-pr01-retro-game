@@ -1,7 +1,7 @@
 @namespace
 class SpriteKind:
-    Coin = SpriteKind.create()
-    pollor = SpriteKind.create()
+    moneda = SpriteKind.create()
+    pollo = SpriteKind.create()
     bola_de_fuego = SpriteKind.create()
 # Destruye al sprite enemigo al tocarlo
 
@@ -50,14 +50,14 @@ def on_on_overlap(sprite4, otherSprite2):
         True)
     pika.set_position(perro.x + 80, perro.y - 80)
     pika.follow(perro, 50)
-sprites.on_overlap(SpriteKind.player, SpriteKind.pollor, on_on_overlap)
+sprites.on_overlap(SpriteKind.player, SpriteKind.pollo, on_on_overlap)
 
 # Incrementa la puntuación y destruye la moneda al tocarla
 
 def on_on_overlap2(sprite, otherSprite):
     info.change_score_by(1)
     otherSprite.destroy()
-sprites.on_overlap(SpriteKind.player, SpriteKind.Coin, on_on_overlap2)
+sprites.on_overlap(SpriteKind.player, SpriteKind.moneda, on_on_overlap2)
 
 # Resta vidas al jugador al tocar la bola de fuego y la destruye
 
@@ -96,8 +96,8 @@ scene.on_overlap_tile(SpriteKind.player,
 # Avanza al siguiente nivel al tocar el tile de salida
 
 def on_overlap_tile2(sprite3, location2):
-    global current_level
-    current_level += 1
+    global nivel_actual
+    nivel_actual += 1
     startLevel()
 scene.on_overlap_tile(SpriteKind.player,
     assets.tile("""
@@ -107,16 +107,16 @@ scene.on_overlap_tile(SpriteKind.player,
 
 # Configura el nivel actual, coloca al jugador y limpia enemigos y objetos
 def startLevel():
-    global pollor, bola_de_fuego
-    if current_level == 0:
+    global pollo, bola_de_fuego
+    if nivel_actual == 0:
         tiles.set_tilemap(tilemap("""
             level
             """))
-    elif current_level == 1:
+    elif nivel_actual == 1:
         tiles.set_tilemap(tilemap("""
             level_0
             """))
-    elif current_level == 2:
+    elif nivel_actual == 2:
         tiles.set_tilemap(tilemap("""
             level_1
             """))
@@ -135,14 +135,14 @@ def startLevel():
     info.set_life(5)
     for value2 in sprites.all_of_kind(SpriteKind.enemy):
         value2.destroy()
-    for value3 in sprites.all_of_kind(SpriteKind.Coin):
+    for value3 in sprites.all_of_kind(SpriteKind.moneda):
         value3.destroy()
-    for value4 in sprites.all_of_kind(SpriteKind.pollor):
+    for value4 in sprites.all_of_kind(SpriteKind.pollo):
         value4.destroy()
     for value5 in tiles.get_tiles_by_type(assets.tile("""
         tile4
         """)):
-        pollor = sprites.create(img("""
+        pollo = sprites.create(img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . . . . . . . . . . .
                 . . . . . f f f f f f f . . . .
@@ -160,8 +160,8 @@ def startLevel():
                 . . . . . f f f f f f f . . . .
                 . . . . . . . . . . . . . . . .
                 """),
-            SpriteKind.Coin)
-        animation.run_image_animation(pollor,
+            SpriteKind.moneda)
+        animation.run_image_animation(pollo,
             [img("""
                     . . . . . . . . . . . . . . . .
                     . . . . f f f f f f f . . . . .
@@ -326,17 +326,17 @@ def startLevel():
                     """)],
             100,
             True)
-        tiles.place_on_tile(pollor, value5)
+        tiles.place_on_tile(pollo, value5)
         tiles.set_tile_at(value5, assets.tile("""
             tile0
             """))
     for value6 in tiles.get_tiles_by_type(assets.tile("""
         tile5
         """)):
-        pollor = sprites.create(assets.image("""
+        pollo = sprites.create(assets.image("""
             pollo
-            """), SpriteKind.pollor)
-        tiles.place_on_tile(pollor, value6)
+            """), SpriteKind.pollo)
+        tiles.place_on_tile(pollo, value6)
         tiles.set_tile_at(value6, assets.tile("""
             tile0
             """))
@@ -353,15 +353,15 @@ def startLevel():
         animation.run_movement_animation(bola_de_fuego, "c 0 -100 0 100 0 0", 2000, True)
         bola_de_fuego.start_effect(effects.fire)
 bola_de_fuego: Sprite = None
-pollor: Sprite = None
+pollo: Sprite = None
 pika: Sprite = None
 perro: Sprite = None
-current_level = 0
+nivel_actual = 0
 scene.set_background_color(9)
 scene.set_background_image(assets.image("""
     snow
     """))
-current_level = 0
+nivel_actual = 0
 perro = sprites.create(img("""
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .

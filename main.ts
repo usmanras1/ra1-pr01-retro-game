@@ -1,11 +1,11 @@
 namespace SpriteKind {
-    export const Coin = SpriteKind.create()
-    export const pollor = SpriteKind.create()
+    export const moneda = SpriteKind.create()
+    export const pollo = SpriteKind.create()
     export const bola_de_fuego = SpriteKind.create()
 }
 
 //  Destruye al sprite enemigo al tocarlo
-sprites.onOverlap(SpriteKind.Player, SpriteKind.pollor, function on_on_overlap(sprite4: Sprite, otherSprite2: Sprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.pollo, function on_on_overlap(sprite4: Sprite, otherSprite2: Sprite) {
     
     otherSprite2.destroy()
     pika = sprites.create(img`
@@ -48,7 +48,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.pollor, function on_on_overlap(s
     pika.follow(perro, 50)
 })
 //  Incrementa la puntuación y destruye la moneda al tocarla
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function on_on_overlap2(sprite: Sprite, otherSprite: Sprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.moneda, function on_on_overlap2(sprite: Sprite, otherSprite: Sprite) {
     info.changeScoreBy(1)
     otherSprite.destroy()
 })
@@ -85,21 +85,21 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`
         tile2
         `, function on_overlap_tile2(sprite3: Sprite, location2: tiles.Location) {
     
-    current_level += 1
+    nivel_actual += 1
     startLevel()
 })
 //  Configura el nivel actual, coloca al jugador y limpia enemigos y objetos
 function startLevel() {
     
-    if (current_level == 0) {
+    if (nivel_actual == 0) {
         tiles.setTilemap(tilemap`
             level
             `)
-    } else if (current_level == 1) {
+    } else if (nivel_actual == 1) {
         tiles.setTilemap(tilemap`
             level_0
             `)
-    } else if (current_level == 2) {
+    } else if (nivel_actual == 2) {
         tiles.setTilemap(tilemap`
             level_1
             `)
@@ -122,16 +122,16 @@ function startLevel() {
     for (let value2 of sprites.allOfKind(SpriteKind.Enemy)) {
         value2.destroy()
     }
-    for (let value3 of sprites.allOfKind(SpriteKind.Coin)) {
+    for (let value3 of sprites.allOfKind(SpriteKind.moneda)) {
         value3.destroy()
     }
-    for (let value4 of sprites.allOfKind(SpriteKind.pollor)) {
+    for (let value4 of sprites.allOfKind(SpriteKind.pollo)) {
         value4.destroy()
     }
     for (let value5 of tiles.getTilesByType(assets.tile`
         tile4
         `)) {
-        pollor = sprites.create(img`
+        pollo = sprites.create(img`
                 . . . . . . . . . . . . . . . .
                 . . . . . . . . . . . . . . . .
                 . . . . . f f f f f f f . . . .
@@ -148,8 +148,8 @@ function startLevel() {
                 . . . . f 5 5 5 5 5 5 5 f . . .
                 . . . . . f f f f f f f . . . .
                 . . . . . . . . . . . . . . . .
-                `, SpriteKind.Coin)
-        animation.runImageAnimation(pollor, [img`
+                `, SpriteKind.moneda)
+        animation.runImageAnimation(pollo, [img`
                     . . . . . . . . . . . . . . . .
                     . . . . f f f f f f f . . . . .
                     . . . f 5 5 5 5 5 5 5 f . . . .
@@ -303,7 +303,7 @@ function startLevel() {
                     . . . . . . . . . . . . . . . .
                     . . . . . . . . . . . . . . . .
                     `], 100, true)
-        tiles.placeOnTile(pollor, value5)
+        tiles.placeOnTile(pollo, value5)
         tiles.setTileAt(value5, assets.tile`
             tile0
             `)
@@ -311,10 +311,10 @@ function startLevel() {
     for (let value6 of tiles.getTilesByType(assets.tile`
         tile5
         `)) {
-        pollor = sprites.create(assets.image`
+        pollo = sprites.create(assets.image`
             pollo
-            `, SpriteKind.pollor)
-        tiles.placeOnTile(pollor, value6)
+            `, SpriteKind.pollo)
+        tiles.placeOnTile(pollo, value6)
         tiles.setTileAt(value6, assets.tile`
             tile0
             `)
@@ -335,15 +335,15 @@ function startLevel() {
 }
 
 let bola_de_fuego : Sprite = null
-let pollor : Sprite = null
+let pollo : Sprite = null
 let pika : Sprite = null
 let perro : Sprite = null
-let current_level = 0
+let nivel_actual = 0
 scene.setBackgroundColor(9)
 scene.setBackgroundImage(assets.image`
     snow
     `)
-current_level = 0
+nivel_actual = 0
 perro = sprites.create(img`
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
