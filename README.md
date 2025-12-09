@@ -1,6 +1,6 @@
 # Juego del Perro Hambriento
 
-El juego trata sobre un perro hambriento que quiere comer pollo y recoger monedas de oro, porque le gusta el oro. Mientras hace eso, tiene que evitar a unos enemigos llamados Pikas que lo persiguen. Comer pollo sirve para recuperar vidas.
+El juego trata sobre un perro hambriento que quiere comer pollo y recoger monedas de oro, porque le gusta el oro. Mientras hace eso, tiene que evitar a unos enemigos llamados Pikas que lo persiguen. Comer pollo sirve para recuperar  vidas.
 
 ## Objetivo del juego
 
