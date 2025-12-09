@@ -1,14 +1,14 @@
 namespace SpriteKind {
     export const Coin = SpriteKind.create()
-    export const Flower = SpriteKind.create()
-    export const Fireball = SpriteKind.create()
+    export const pollor = SpriteKind.create()
+    export const bola_de_fuego = SpriteKind.create()
 }
 
 //  Destruye al sprite enemigo al tocarlo
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Flower, function on_on_overlap(sprite4: Sprite, otherSprite2: Sprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.pollor, function on_on_overlap(sprite4: Sprite, otherSprite2: Sprite) {
     
     otherSprite2.destroy()
-    bee = sprites.create(img`
+    pika = sprites.create(img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -26,7 +26,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Flower, function on_on_overlap(s
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             `, SpriteKind.Enemy)
-    animation.runImageAnimation(bee, [img`
+    animation.runImageAnimation(pika, [img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -44,8 +44,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Flower, function on_on_overlap(s
             . . . f f f f f f f f f . . . .
             . . . . f f f f f f f . . . . .
             `], 100, true)
-    bee.setPosition(Hops_and_Paw.x + 80, Hops_and_Paw.y - 80)
-    bee.follow(Hops_and_Paw, 50)
+    pika.setPosition(perro.x + 80, perro.y - 80)
+    pika.follow(perro, 50)
 })
 //  Incrementa la puntuación y destruye la moneda al tocarla
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function on_on_overlap2(sprite: Sprite, otherSprite: Sprite) {
@@ -53,21 +53,21 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function on_on_overlap2(sp
     otherSprite.destroy()
 })
 //  Resta vidas al jugador al tocar la bola de fuego y la destruye
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Fireball, function on_on_overlap3(sprite5: Sprite, otherSprite3: Sprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.bola_de_fuego, function on_on_overlap3(sprite5: Sprite, otherSprite3: Sprite) {
     info.changeLifeBy(-2)
     otherSprite3.destroy()
 })
 //  Hace que el jugador salte al presionar A
 controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
-    if (Hops_and_Paw.vy == 0) {
-        Hops_and_Paw.vy = -150
+    if (perro.vy == 0) {
+        perro.vy = -150
     }
     
 })
 //  Maneja el choque con un enemigo
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_on_overlap4(sprite6: Sprite, otherSprite4: Sprite) {
     otherSprite4.destroy()
-    if (Hops_and_Paw.y < otherSprite4.y) {
+    if (perro.y < otherSprite4.y) {
         info.changeScoreBy(3)
     } else {
         info.changeLifeBy(-1)
@@ -107,7 +107,7 @@ function startLevel() {
         game.over(true)
     }
     
-    tiles.placeOnRandomTile(Hops_and_Paw, assets.tile`
+    tiles.placeOnRandomTile(perro, assets.tile`
         tile6
         `)
     for (let value of tiles.getTilesByType(assets.tile`
@@ -117,7 +117,7 @@ function startLevel() {
             tile0
             `)
     }
-    scene.cameraFollowSprite(Hops_and_Paw)
+    scene.cameraFollowSprite(perro)
     info.setLife(5)
     for (let value2 of sprites.allOfKind(SpriteKind.Enemy)) {
         value2.destroy()
@@ -125,13 +125,13 @@ function startLevel() {
     for (let value3 of sprites.allOfKind(SpriteKind.Coin)) {
         value3.destroy()
     }
-    for (let value4 of sprites.allOfKind(SpriteKind.Flower)) {
+    for (let value4 of sprites.allOfKind(SpriteKind.pollor)) {
         value4.destroy()
     }
     for (let value5 of tiles.getTilesByType(assets.tile`
         tile4
         `)) {
-        flower = sprites.create(img`
+        pollor = sprites.create(img`
                 . . . . . . . . . . . . . . . .
                 . . . . . . . . . . . . . . . .
                 . . . . . f f f f f f f . . . .
@@ -149,7 +149,7 @@ function startLevel() {
                 . . . . . f f f f f f f . . . .
                 . . . . . . . . . . . . . . . .
                 `, SpriteKind.Coin)
-        animation.runImageAnimation(flower, [img`
+        animation.runImageAnimation(pollor, [img`
                     . . . . . . . . . . . . . . . .
                     . . . . f f f f f f f . . . . .
                     . . . f 5 5 5 5 5 5 5 f . . . .
@@ -303,7 +303,7 @@ function startLevel() {
                     . . . . . . . . . . . . . . . .
                     . . . . . . . . . . . . . . . .
                     `], 100, true)
-        tiles.placeOnTile(flower, value5)
+        tiles.placeOnTile(pollor, value5)
         tiles.setTileAt(value5, assets.tile`
             tile0
             `)
@@ -311,10 +311,10 @@ function startLevel() {
     for (let value6 of tiles.getTilesByType(assets.tile`
         tile5
         `)) {
-        flower = sprites.create(assets.image`
+        pollor = sprites.create(assets.image`
             pollo
-            `, SpriteKind.Flower)
-        tiles.placeOnTile(flower, value6)
+            `, SpriteKind.pollor)
+        tiles.placeOnTile(pollor, value6)
         tiles.setTileAt(value6, assets.tile`
             tile0
             `)
@@ -322,29 +322,29 @@ function startLevel() {
     for (let value7 of tiles.getTilesByType(assets.tile`
         tile11
         `)) {
-        fireball = sprites.create(assets.image`
+        bola_de_fuego = sprites.create(assets.image`
             portal
-            `, SpriteKind.Fireball)
-        tiles.placeOnTile(fireball, value7)
+            `, SpriteKind.bola_de_fuego)
+        tiles.placeOnTile(bola_de_fuego, value7)
         tiles.setTileAt(value7, assets.tile`
             tile0
             `)
-        animation.runMovementAnimation(fireball, "c 0 -100 0 100 0 0", 2000, true)
-        fireball.startEffect(effects.fire)
+        animation.runMovementAnimation(bola_de_fuego, "c 0 -100 0 100 0 0", 2000, true)
+        bola_de_fuego.startEffect(effects.fire)
     }
 }
 
-let fireball : Sprite = null
-let flower : Sprite = null
-let bee : Sprite = null
-let Hops_and_Paw : Sprite = null
+let bola_de_fuego : Sprite = null
+let pollor : Sprite = null
+let pika : Sprite = null
+let perro : Sprite = null
 let current_level = 0
 scene.setBackgroundColor(9)
 scene.setBackgroundImage(assets.image`
     snow
     `)
 current_level = 0
-Hops_and_Paw = sprites.create(img`
+perro = sprites.create(img`
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
@@ -362,12 +362,12 @@ Hops_and_Paw = sprites.create(img`
         . . . . e . e . . . e . e . . .
         . . . . e . e . . . e . e . . .
         `, SpriteKind.Player)
-controller.moveSprite(Hops_and_Paw, 80, 0)
+controller.moveSprite(perro, 80, 0)
 startLevel()
 game.onUpdate(function on_on_update() {
-    if (Hops_and_Paw.vy < 0) {
+    if (perro.vy < 0) {
         //  Perro saltando hacia arriba
-        Hops_and_Paw.setImage(img`
+        perro.setImage(img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . e e e . . .
@@ -385,9 +385,9 @@ game.onUpdate(function on_on_update() {
             . . . . . e . . e . . . . . . .
             . . . . . e . . . . . . . . . .
             `)
-    } else if (Hops_and_Paw.vy > 0) {
+    } else if (perro.vy > 0) {
         //  Perro cayendo
-        Hops_and_Paw.setImage(img`
+        perro.setImage(img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -405,9 +405,9 @@ game.onUpdate(function on_on_update() {
             . . . . . . . . e . e . . . . .
             . . . . . . . . e . e e . . . .
             `)
-    } else if (Hops_and_Paw.x % 2 == 0) {
+    } else if (perro.x % 2 == 0) {
         //  Perro caminando - posición 1
-        Hops_and_Paw.setImage(img`
+        perro.setImage(img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -427,7 +427,7 @@ game.onUpdate(function on_on_update() {
             `)
     } else {
         //  Perro caminando - posición 2
-        Hops_and_Paw.setImage(img`
+        perro.setImage(img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -447,11 +447,11 @@ game.onUpdate(function on_on_update() {
             `)
     }
     
-    if ((Hops_and_Paw.isHittingTile(CollisionDirection.Left) || Hops_and_Paw.isHittingTile(CollisionDirection.Right)) && Hops_and_Paw.vy >= 0) {
+    if ((perro.isHittingTile(CollisionDirection.Left) || perro.isHittingTile(CollisionDirection.Right)) && perro.vy >= 0) {
         //  Perro escalando pared
-        Hops_and_Paw.vy = 0
-        Hops_and_Paw.ay = 0
-        Hops_and_Paw.setImage(img`
+        perro.vy = 0
+        perro.ay = 0
+        perro.setImage(img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -470,12 +470,12 @@ game.onUpdate(function on_on_update() {
             . . . . . . . . e e e e e e e e
             `)
     } else {
-        Hops_and_Paw.ay = 350
+        perro.ay = 350
     }
     
-    if (Hops_and_Paw.vx < 0 || Hops_and_Paw.isHittingTile(CollisionDirection.Left)) {
-        Hops_and_Paw.image.flipX()
-        Hops_and_Paw.setImage(Hops_and_Paw.image)
+    if (perro.vx < 0 || perro.isHittingTile(CollisionDirection.Left)) {
+        perro.image.flipX()
+        perro.setImage(perro.image)
     }
     
 })

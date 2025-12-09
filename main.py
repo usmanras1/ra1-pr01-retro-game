@@ -1,14 +1,14 @@
 @namespace
 class SpriteKind:
     Coin = SpriteKind.create()
-    Flower = SpriteKind.create()
-    Fireball = SpriteKind.create()
+    pollor = SpriteKind.create()
+    bola_de_fuego = SpriteKind.create()
 # Destruye al sprite enemigo al tocarlo
 
 def on_on_overlap(sprite4, otherSprite2):
-    global bee
+    global pika
     otherSprite2.destroy()
-    bee = sprites.create(img("""
+    pika = sprites.create(img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -27,7 +27,7 @@ def on_on_overlap(sprite4, otherSprite2):
             . . . . . . . . . . . . . . . .
             """),
         SpriteKind.enemy)
-    animation.run_image_animation(bee,
+    animation.run_image_animation(pika,
         [img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -48,9 +48,9 @@ def on_on_overlap(sprite4, otherSprite2):
             """)],
         100,
         True)
-    bee.set_position(Hops_and_Paw.x + 80, Hops_and_Paw.y - 80)
-    bee.follow(Hops_and_Paw, 50)
-sprites.on_overlap(SpriteKind.player, SpriteKind.Flower, on_on_overlap)
+    pika.set_position(perro.x + 80, perro.y - 80)
+    pika.follow(perro, 50)
+sprites.on_overlap(SpriteKind.player, SpriteKind.pollor, on_on_overlap)
 
 # Incrementa la puntuación y destruye la moneda al tocarla
 
@@ -64,20 +64,20 @@ sprites.on_overlap(SpriteKind.player, SpriteKind.Coin, on_on_overlap2)
 def on_on_overlap3(sprite5, otherSprite3):
     info.change_life_by(-2)
     otherSprite3.destroy()
-sprites.on_overlap(SpriteKind.player, SpriteKind.Fireball, on_on_overlap3)
+sprites.on_overlap(SpriteKind.player, SpriteKind.bola_de_fuego, on_on_overlap3)
 
 # Hace que el jugador salte al presionar A
 
 def on_a_pressed():
-    if Hops_and_Paw.vy == 0:
-        Hops_and_Paw.vy = -150
+    if perro.vy == 0:
+        perro.vy = -150
 controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
 
 # Maneja el choque con un enemigo
 
 def on_on_overlap4(sprite6, otherSprite4):
     otherSprite4.destroy()
-    if Hops_and_Paw.y < otherSprite4.y:
+    if perro.y < otherSprite4.y:
         info.change_score_by(3)
     else:
         info.change_life_by(-1)
@@ -107,7 +107,7 @@ scene.on_overlap_tile(SpriteKind.player,
 
 # Configura el nivel actual, coloca al jugador y limpia enemigos y objetos
 def startLevel():
-    global flower, fireball
+    global pollor, bola_de_fuego
     if current_level == 0:
         tiles.set_tilemap(tilemap("""
             level
@@ -122,7 +122,7 @@ def startLevel():
             """))
     else:
         game.over(True)
-    tiles.place_on_random_tile(Hops_and_Paw, assets.tile("""
+    tiles.place_on_random_tile(perro, assets.tile("""
         tile6
         """))
     for value in tiles.get_tiles_by_type(assets.tile("""
@@ -131,18 +131,18 @@ def startLevel():
         tiles.set_tile_at(value, assets.tile("""
             tile0
             """))
-    scene.camera_follow_sprite(Hops_and_Paw)
+    scene.camera_follow_sprite(perro)
     info.set_life(5)
     for value2 in sprites.all_of_kind(SpriteKind.enemy):
         value2.destroy()
     for value3 in sprites.all_of_kind(SpriteKind.Coin):
         value3.destroy()
-    for value4 in sprites.all_of_kind(SpriteKind.Flower):
+    for value4 in sprites.all_of_kind(SpriteKind.pollor):
         value4.destroy()
     for value5 in tiles.get_tiles_by_type(assets.tile("""
         tile4
         """)):
-        flower = sprites.create(img("""
+        pollor = sprites.create(img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . . . . . . . . . . .
                 . . . . . f f f f f f f . . . .
@@ -161,7 +161,7 @@ def startLevel():
                 . . . . . . . . . . . . . . . .
                 """),
             SpriteKind.Coin)
-        animation.run_image_animation(flower,
+        animation.run_image_animation(pollor,
             [img("""
                     . . . . . . . . . . . . . . . .
                     . . . . f f f f f f f . . . . .
@@ -326,43 +326,43 @@ def startLevel():
                     """)],
             100,
             True)
-        tiles.place_on_tile(flower, value5)
+        tiles.place_on_tile(pollor, value5)
         tiles.set_tile_at(value5, assets.tile("""
             tile0
             """))
     for value6 in tiles.get_tiles_by_type(assets.tile("""
         tile5
         """)):
-        flower = sprites.create(assets.image("""
+        pollor = sprites.create(assets.image("""
             pollo
-            """), SpriteKind.Flower)
-        tiles.place_on_tile(flower, value6)
+            """), SpriteKind.pollor)
+        tiles.place_on_tile(pollor, value6)
         tiles.set_tile_at(value6, assets.tile("""
             tile0
             """))
     for value7 in tiles.get_tiles_by_type(assets.tile("""
         tile11
         """)):
-        fireball = sprites.create(assets.image("""
+        bola_de_fuego = sprites.create(assets.image("""
             portal
-            """), SpriteKind.Fireball)
-        tiles.place_on_tile(fireball, value7)
+            """), SpriteKind.bola_de_fuego)
+        tiles.place_on_tile(bola_de_fuego, value7)
         tiles.set_tile_at(value7, assets.tile("""
             tile0
             """))
-        animation.run_movement_animation(fireball, "c 0 -100 0 100 0 0", 2000, True)
-        fireball.start_effect(effects.fire)
-fireball: Sprite = None
-flower: Sprite = None
-bee: Sprite = None
-Hops_and_Paw: Sprite = None
+        animation.run_movement_animation(bola_de_fuego, "c 0 -100 0 100 0 0", 2000, True)
+        bola_de_fuego.start_effect(effects.fire)
+bola_de_fuego: Sprite = None
+pollor: Sprite = None
+pika: Sprite = None
+perro: Sprite = None
 current_level = 0
 scene.set_background_color(9)
 scene.set_background_image(assets.image("""
     snow
     """))
 current_level = 0
-Hops_and_Paw = sprites.create(img("""
+perro = sprites.create(img("""
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
         . . . . . . . . . . . . . . . .
@@ -381,13 +381,13 @@ Hops_and_Paw = sprites.create(img("""
         . . . . e . e . . . e . e . . .
         """),
     SpriteKind.player)
-controller.move_sprite(Hops_and_Paw, 80, 0)
+controller.move_sprite(perro, 80, 0)
 startLevel()
 
 def on_on_update():
-    if Hops_and_Paw.vy < 0:
+    if perro.vy < 0:
         # Perro saltando hacia arriba
-        Hops_and_Paw.set_image(img("""
+        perro.set_image(img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . e e e . . .
@@ -405,9 +405,9 @@ def on_on_update():
             . . . . . e . . e . . . . . . .
             . . . . . e . . . . . . . . . .
             """))
-    elif Hops_and_Paw.vy > 0:
+    elif perro.vy > 0:
         # Perro cayendo
-        Hops_and_Paw.set_image(img("""
+        perro.set_image(img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -425,9 +425,9 @@ def on_on_update():
             . . . . . . . . e . e . . . . .
             . . . . . . . . e . e e . . . .
             """))
-    elif Hops_and_Paw.x % 2 == 0:
+    elif perro.x % 2 == 0:
         # Perro caminando - posición 1
-        Hops_and_Paw.set_image(img("""
+        perro.set_image(img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -447,7 +447,7 @@ def on_on_update():
             """))
     else:
         # Perro caminando - posición 2
-        Hops_and_Paw.set_image(img("""
+        perro.set_image(img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -465,11 +465,11 @@ def on_on_update():
             . . . . e . e . . . e . e . . .
             . . . . e . e . . . e . e . . .
             """))
-    if (Hops_and_Paw.is_hitting_tile(CollisionDirection.LEFT) or Hops_and_Paw.is_hitting_tile(CollisionDirection.RIGHT)) and Hops_and_Paw.vy >= 0:
+    if (perro.is_hitting_tile(CollisionDirection.LEFT) or perro.is_hitting_tile(CollisionDirection.RIGHT)) and perro.vy >= 0:
         # Perro escalando pared
-        Hops_and_Paw.vy = 0
-        Hops_and_Paw.ay = 0
-        Hops_and_Paw.set_image(img("""
+        perro.vy = 0
+        perro.ay = 0
+        perro.set_image(img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -488,8 +488,8 @@ def on_on_update():
             . . . . . . . . e e e e e e e e
             """))
     else:
-        Hops_and_Paw.ay = 350
-    if Hops_and_Paw.vx < 0 or Hops_and_Paw.is_hitting_tile(CollisionDirection.LEFT):
-        Hops_and_Paw.image.flip_x()
-        Hops_and_Paw.set_image(Hops_and_Paw.image)
+        perro.ay = 350
+    if perro.vx < 0 or perro.is_hitting_tile(CollisionDirection.LEFT):
+        perro.image.flip_x()
+        perro.set_image(perro.image)
 game.on_update(on_on_update)
