@@ -3,9 +3,23 @@ class SpriteKind:
     moneda = SpriteKind.create()
     pollo = SpriteKind.create()
     bola_de_fuego = SpriteKind.create()
+# Resta vidas al jugador al tocar la bola de fuego y la destruye
+
+def on_on_overlap(sprite5, otherSprite3):
+    info.change_life_by(-2)
+    otherSprite3.destroy()
+sprites.on_overlap(SpriteKind.player, SpriteKind.bola_de_fuego, on_on_overlap)
+
+# Hace que el jugador salte al presionar A
+
+def on_a_pressed():
+    if perro.vy == 0:
+        perro.vy = -150
+controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
+
 # Destruye al sprite enemigo al tocarlo
 
-def on_on_overlap(sprite4, otherSprite2):
+def on_on_overlap2(sprite4, otherSprite2):
     global pika
     otherSprite2.destroy()
     pika = sprites.create(img("""
@@ -50,38 +64,24 @@ def on_on_overlap(sprite4, otherSprite2):
         True)
     pika.set_position(perro.x + 80, perro.y - 80)
     pika.follow(perro, 50)
-sprites.on_overlap(SpriteKind.player, SpriteKind.pollo, on_on_overlap)
-
-# Incrementa la puntuación y destruye la moneda al tocarla
-
-def on_on_overlap2(sprite, otherSprite):
-    info.change_score_by(1)
-    otherSprite.destroy()
-sprites.on_overlap(SpriteKind.player, SpriteKind.moneda, on_on_overlap2)
-
-# Resta vidas al jugador al tocar la bola de fuego y la destruye
-
-def on_on_overlap3(sprite5, otherSprite3):
-    info.change_life_by(-2)
-    otherSprite3.destroy()
-sprites.on_overlap(SpriteKind.player, SpriteKind.bola_de_fuego, on_on_overlap3)
-
-# Hace que el jugador salte al presionar A
-
-def on_a_pressed():
-    if perro.vy == 0:
-        perro.vy = -150
-controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
+sprites.on_overlap(SpriteKind.player, SpriteKind.pollo, on_on_overlap2)
 
 # Maneja el choque con un enemigo
 
-def on_on_overlap4(sprite6, otherSprite4):
+def on_on_overlap3(sprite6, otherSprite4):
     otherSprite4.destroy()
     if perro.y < otherSprite4.y:
         info.change_score_by(3)
     else:
         info.change_life_by(-1)
-sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap4)
+sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_on_overlap3)
+
+# Incrementa la puntuación y destruye la moneda al tocarla
+
+def on_on_overlap4(sprite, otherSprite):
+    info.change_score_by(1)
+    otherSprite.destroy()
+sprites.on_overlap(SpriteKind.player, SpriteKind.moneda, on_on_overlap4)
 
 # Termina el juego si el jugador toca el tile peligroso
 
@@ -107,7 +107,7 @@ scene.on_overlap_tile(SpriteKind.player,
 
 # Configura el nivel actual, coloca al jugador y limpia enemigos y objetos
 def startLevel():
-    global pollo, bola_de_fuego
+    global pollo2, bola_de_fuego2
     if nivel_actual == 0:
         tiles.set_tilemap(tilemap("""
             level
@@ -142,7 +142,7 @@ def startLevel():
     for value5 in tiles.get_tiles_by_type(assets.tile("""
         tile4
         """)):
-        pollo = sprites.create(img("""
+        pollo2 = sprites.create(img("""
                 . . . . . . . . . . . . . . . .
                 . . . . . . . . . . . . . . . .
                 . . . . . f f f f f f f . . . .
@@ -161,7 +161,7 @@ def startLevel():
                 . . . . . . . . . . . . . . . .
                 """),
             SpriteKind.moneda)
-        animation.run_image_animation(pollo,
+        animation.run_image_animation(pollo2,
             [img("""
                     . . . . . . . . . . . . . . . .
                     . . . . f f f f f f f . . . . .
@@ -326,34 +326,35 @@ def startLevel():
                     """)],
             100,
             True)
-        tiles.place_on_tile(pollo, value5)
+        tiles.place_on_tile(pollo2, value5)
         tiles.set_tile_at(value5, assets.tile("""
             tile0
             """))
     for value6 in tiles.get_tiles_by_type(assets.tile("""
         tile5
         """)):
-        pollo = sprites.create(assets.image("""
+        pollo2 = sprites.create(assets.image("""
             pollo
             """), SpriteKind.pollo)
-        tiles.place_on_tile(pollo, value6)
+        tiles.place_on_tile(pollo2, value6)
         tiles.set_tile_at(value6, assets.tile("""
             tile0
             """))
     for value7 in tiles.get_tiles_by_type(assets.tile("""
         tile11
         """)):
-        bola_de_fuego = sprites.create(assets.image("""
-            portal
-            """), SpriteKind.bola_de_fuego)
-        tiles.place_on_tile(bola_de_fuego, value7)
+        bola_de_fuego2 = sprites.create(assets.image("""
+                portal
+                """),
+            SpriteKind.bola_de_fuego)
+        tiles.place_on_tile(bola_de_fuego2, value7)
         tiles.set_tile_at(value7, assets.tile("""
             tile0
             """))
-        animation.run_movement_animation(bola_de_fuego, "c 0 -100 0 100 0 0", 2000, True)
-        bola_de_fuego.start_effect(effects.fire)
-bola_de_fuego: Sprite = None
-pollo: Sprite = None
+        animation.run_movement_animation(bola_de_fuego2, "c 0 -100 0 100 0 0", 2000, True)
+        bola_de_fuego2.start_effect(effects.fire)
+bola_de_fuego2: Sprite = None
+pollo2: Sprite = None
 pika: Sprite = None
 perro: Sprite = None
 nivel_actual = 0
@@ -426,7 +427,7 @@ def on_on_update():
             . . . . . . . . e . e e . . . .
             """))
     elif perro.x % 2 == 0:
-        # Perro caminando - posición 1
+        # Perro caminando
         perro.set_image(img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -446,7 +447,7 @@ def on_on_update():
             . . . . e e . . . . . e e . . .
             """))
     else:
-        # Perro caminando - posición 2
+        # Perro caminando
         perro.set_image(img("""
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .

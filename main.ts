@@ -4,8 +4,20 @@ namespace SpriteKind {
     export const bola_de_fuego = SpriteKind.create()
 }
 
+//  Resta vidas al jugador al tocar la bola de fuego y la destruye
+sprites.onOverlap(SpriteKind.Player, SpriteKind.bola_de_fuego, function on_on_overlap(sprite5: Sprite, otherSprite3: Sprite) {
+    info.changeLifeBy(-2)
+    otherSprite3.destroy()
+})
+//  Hace que el jugador salte al presionar A
+controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
+    if (perro.vy == 0) {
+        perro.vy = -150
+    }
+    
+})
 //  Destruye al sprite enemigo al tocarlo
-sprites.onOverlap(SpriteKind.Player, SpriteKind.pollo, function on_on_overlap(sprite4: Sprite, otherSprite2: Sprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.pollo, function on_on_overlap2(sprite4: Sprite, otherSprite2: Sprite) {
     
     otherSprite2.destroy()
     pika = sprites.create(img`
@@ -47,25 +59,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.pollo, function on_on_overlap(sp
     pika.setPosition(perro.x + 80, perro.y - 80)
     pika.follow(perro, 50)
 })
-//  Incrementa la puntuación y destruye la moneda al tocarla
-sprites.onOverlap(SpriteKind.Player, SpriteKind.moneda, function on_on_overlap2(sprite: Sprite, otherSprite: Sprite) {
-    info.changeScoreBy(1)
-    otherSprite.destroy()
-})
-//  Resta vidas al jugador al tocar la bola de fuego y la destruye
-sprites.onOverlap(SpriteKind.Player, SpriteKind.bola_de_fuego, function on_on_overlap3(sprite5: Sprite, otherSprite3: Sprite) {
-    info.changeLifeBy(-2)
-    otherSprite3.destroy()
-})
-//  Hace que el jugador salte al presionar A
-controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
-    if (perro.vy == 0) {
-        perro.vy = -150
-    }
-    
-})
 //  Maneja el choque con un enemigo
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_on_overlap4(sprite6: Sprite, otherSprite4: Sprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_on_overlap3(sprite6: Sprite, otherSprite4: Sprite) {
     otherSprite4.destroy()
     if (perro.y < otherSprite4.y) {
         info.changeScoreBy(3)
@@ -73,6 +68,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_on_overlap4(s
         info.changeLifeBy(-1)
     }
     
+})
+//  Incrementa la puntuación y destruye la moneda al tocarla
+sprites.onOverlap(SpriteKind.Player, SpriteKind.moneda, function on_on_overlap4(sprite: Sprite, otherSprite: Sprite) {
+    info.changeScoreBy(1)
+    otherSprite.destroy()
 })
 //  Termina el juego si el jugador toca el tile peligroso
 scene.onOverlapTile(SpriteKind.Player, assets.tile`
@@ -131,7 +131,7 @@ function startLevel() {
     for (let value5 of tiles.getTilesByType(assets.tile`
         tile4
         `)) {
-        pollo = sprites.create(img`
+        pollo2 = sprites.create(img`
                 . . . . . . . . . . . . . . . .
                 . . . . . . . . . . . . . . . .
                 . . . . . f f f f f f f . . . .
@@ -149,7 +149,7 @@ function startLevel() {
                 . . . . . f f f f f f f . . . .
                 . . . . . . . . . . . . . . . .
                 `, SpriteKind.moneda)
-        animation.runImageAnimation(pollo, [img`
+        animation.runImageAnimation(pollo2, [img`
                     . . . . . . . . . . . . . . . .
                     . . . . f f f f f f f . . . . .
                     . . . f 5 5 5 5 5 5 5 f . . . .
@@ -303,7 +303,7 @@ function startLevel() {
                     . . . . . . . . . . . . . . . .
                     . . . . . . . . . . . . . . . .
                     `], 100, true)
-        tiles.placeOnTile(pollo, value5)
+        tiles.placeOnTile(pollo2, value5)
         tiles.setTileAt(value5, assets.tile`
             tile0
             `)
@@ -311,10 +311,10 @@ function startLevel() {
     for (let value6 of tiles.getTilesByType(assets.tile`
         tile5
         `)) {
-        pollo = sprites.create(assets.image`
+        pollo2 = sprites.create(assets.image`
             pollo
             `, SpriteKind.pollo)
-        tiles.placeOnTile(pollo, value6)
+        tiles.placeOnTile(pollo2, value6)
         tiles.setTileAt(value6, assets.tile`
             tile0
             `)
@@ -322,20 +322,20 @@ function startLevel() {
     for (let value7 of tiles.getTilesByType(assets.tile`
         tile11
         `)) {
-        bola_de_fuego = sprites.create(assets.image`
-            portal
-            `, SpriteKind.bola_de_fuego)
-        tiles.placeOnTile(bola_de_fuego, value7)
+        bola_de_fuego2 = sprites.create(assets.image`
+                portal
+                `, SpriteKind.bola_de_fuego)
+        tiles.placeOnTile(bola_de_fuego2, value7)
         tiles.setTileAt(value7, assets.tile`
             tile0
             `)
-        animation.runMovementAnimation(bola_de_fuego, "c 0 -100 0 100 0 0", 2000, true)
-        bola_de_fuego.startEffect(effects.fire)
+        animation.runMovementAnimation(bola_de_fuego2, "c 0 -100 0 100 0 0", 2000, true)
+        bola_de_fuego2.startEffect(effects.fire)
     }
 }
 
-let bola_de_fuego : Sprite = null
-let pollo : Sprite = null
+let bola_de_fuego2 : Sprite = null
+let pollo2 : Sprite = null
 let pika : Sprite = null
 let perro : Sprite = null
 let nivel_actual = 0
@@ -406,7 +406,7 @@ game.onUpdate(function on_on_update() {
             . . . . . . . . e . e e . . . .
             `)
     } else if (perro.x % 2 == 0) {
-        //  Perro caminando - posición 1
+        //  Perro caminando
         perro.setImage(img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
@@ -426,7 +426,7 @@ game.onUpdate(function on_on_update() {
             . . . . e e . . . . . e e . . .
             `)
     } else {
-        //  Perro caminando - posición 2
+        //  Perro caminando
         perro.setImage(img`
             . . . . . . . . . . . . . . . .
             . . . . . . . . . . . . . . . .
